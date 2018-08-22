@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/mainpage.css') }}">
+    {% if title %}
+    <title>
+        {{ title }} - Microblog
+
+    </title>
+    {% else %}
+    <title>Welcome to Microblog!</title>
+    {% endif %}
+
+</head>
+<body>
+    <div class="title">My first Webpage</div>
+    <div class="slogan">Do your best</div>
+<div class="container">  
+    <nav class="site-nav">
+        <ul class="link-group">
+
+
+           <li> <a href="{{ url_for('index')}}">Home </a> </li>
+            {% if current_user.is_anonymous %}
+            
+            <li> <a href="{{ url_for('login')}}">Login </a></li>
+            {% else %}
+            <li>  <a href="{{ url_for('user', username=current_user.username )}}">Profile </a></li>
+            <li>  <a href="{{ url_for('logout')}}">Logout </a></li>
+            {% endif %}
+        </ul>
+
+    </nav>
+
+
+</div>
+<hr>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>
