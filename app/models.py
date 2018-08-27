@@ -35,9 +35,10 @@ class User(UserMixin, db.Model):
 
     # we want to add avatar to the profile page
     def avatar(self, size):
-        print(self.email)
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
-        return 'https://www.gravatar.com/avatar.com/{}?d=identicon&s={}'.format(digest,size)
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
+            digest, size)
+    
 
 
 #Another class is created for a new data base
