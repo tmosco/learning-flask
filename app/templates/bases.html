@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/mainpage.css') }}"> {% if title %}
+    <title>
+        {{ title }} - Microblog
+
+    </title>
+    {% else %}
+    <title>Welcome to Microblog!</title>
+    {% endif %}
+
+</head>
+
+<body>
+    <div class="title">My first Webpage</div>
+    <div class="slogan">Do your best</div>
+    <div class="container">
+        <nav class="site-nav">
+            <ul class="link-group">
+
+
+                <li>
+                    <a href="{{ url_for('index')}}">Home </a>
+                </li>
+                {% if current_user.is_anonymous %}
+
+                <li>
+                    <a href="{{ url_for('login')}}">Login </a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{{ url_for('user', username=current_user.username )}}">Profile </a>
+                </li>
+                <li>
+                        <a href="{{ url_for('explore') }}">Explore</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('logout')}}">Logout </a>
+                </li>
+                {% endif %}
+            </ul>
+
+        </nav>
+
+
+    </div>
+    <hr> {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
+     {% block content %} {% endblock %}
+
+</body>
+
+</html>
+
+
+
+\for register
+
+{% extends "base.html" %} {% block content %}
+<h1>Register</h1>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+
+        {{ form.username.label }}
+        <br> {{ form.username(size=32) }}
+        <br> {% for error in form.username.errors %}
+        <span style="color: red" ;>[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.email.label }}
+        <br> {{ form.email(size=64) }}
+        <br> {% for error in form.email.errors %}
+        <span style="color: red" ;>[{{ error }}]</span>
+        {% endfor %}
+
+    </p>
+    <p>
+        {{ form.password.label }}
+        <br> {{ form.password(size=32) }}
+        <br> {% for error in form.password.errors %}
+        <span style="color: red" ;>[{{ error }}]</span>
+        {% endfor %}
+
+    </p>
+    <p>
+        {{ form.password2.label }}
+        <br> {{ form.password2(size=32) }}
+        <br> {% for error in form.password2.errors %}
+        <span style="color: red" ;>[{{ error }}]</span>
+        {% endfor %}
+
+    </p>
+    <div class="submit">
+        <br> {{ form.submit() }}
+    </div>
+</form>
+
+
+
+{% endblock %}
+
+<!-- from Post -->
+
+<table>
+        <tr valign="top">
+            <td><img src="{{ post.author.avatar(36) }}"></td>
+            <td>
+                <a href="{{ url_for('user', username=post.author.username) }}">
+                    {{ post.author.username }}
+                </a>
+                says:<br>{{ post.body }}
+            </td>
+        </tr>
+    </table>
+
+
+
+
+
+
+    <!-- for login -->
+
+    {% extends "base.html" %}
+
+
+{% block content %}
+
+
+<h1>Sign In</h1>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.username.label }} <br>  <!--the name you want to use -->
+        {{ form.username(size=32)}}     <!--the field you create -->
+        {% for error in form.username.errors %}
+        <span style="color: red;">[{{ error }}] </span>
+        {% endfor %}
+    </p>
+    <p>
+        {{form.password.label}}<br>
+        {{ form.password(size=32)}}
+        {% for error in form.password.errors %}
+        <span style="color: red";>[{{ error }}] </span>
+        {% endfor %}
+    </p>
+    <p>
+        {{form.remember_me()}}
+        {{ form.remember_me.label}}
+    </p>
+    <p>
+        {{form.submit()}}
+    </p>
+</form>
+
+<p>Forgot Your Password? <a href="{{url_for('reset_password_request')}}">Click to Reset IT </a></p>
+<div> New User? <a href="{{ url_for('register') }}">Click to Register!</a></div>
+
+
+
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }} {# this is for the time using moment.js#}
+{% endblock %}
+
+
+
+
+{% endblock %}
+
+
